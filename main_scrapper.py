@@ -15,10 +15,10 @@ def get_pages():
     pages = list()
 
     get_single_category_page(pages, 1, "Cocktails", 125) #125
-    get_single_category_page(pages, 2, "Punches", 7)
-    get_single_category_page(pages, 3, "Shot", 28)
-    get_single_category_page(pages, 4, "Beer", 5)
-    get_single_category_page(pages, 7, "Coffee & tea", 5)
+    #get_single_category_page(pages, 2, "Punches", 7)
+    #get_single_category_page(pages, 3, "Shot", 28)
+    #get_single_category_page(pages, 4, "Beer", 5)
+    #get_single_category_page(pages, 7, "Coffee & tea", 5)
 
 
     return pages
@@ -27,8 +27,10 @@ def get_pages():
 def get_single_category_page(pages, category_id, category, num_of_pages):
     links = list()
     for x in range(1, num_of_pages):
+        if x == 2:
+            break
         webpage = requests.get("http://www.drinksmixer.com/cat/" + str(category_id) + "/" + str(x))
-        print "Getting page: http://www.drinksmixer.com/cat/" + str(category_id) + "/" + str(x)
+        print("Getting page: http://www.drinksmixer.com/cat/" + str(category_id) + "/" + str(x))
         tree = html.fromstring(webpage.content)
 
         links.extend(tree.xpath('/html/body/div/div[1]/div[1]/div[1]/div[2]/div[3]//@href'))
@@ -74,8 +76,9 @@ def process_pages(pages, all_ingredients):
     drinks = list()
 
     for index, page in enumerate(pages):
-        print "Processing: " + str(index) + "/" + str(len(pages)) + ", " + page[0]
-
+        print("Processing: " + str(index) + "/" + str(len(pages)) + ", " + page[0])
+        if index == 2:
+            break
         # webpage = requests.get(page[0])
         webpage = ''
         while webpage == '':
@@ -157,7 +160,7 @@ ingredients_list = list()
 drinks_list = process_pages(get_pages(), ingredients_list)
 
 write_drinks_to_file(drinks_list)
-write_ingredients_to_file(ingredients_list)
-write_map_ingredient_drink_to_file(drinks_list)
+#write_ingredients_to_file(ingredients_list)
+#write_map_ingredient_drink_to_file(drinks_list)
 
 
